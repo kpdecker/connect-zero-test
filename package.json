@@ -1,0 +1,7 @@
+{
+  "name": "connect-zero-test",
+  "version": "0.0.0",
+  "description": "Browser connection abort tester",
+  "author": "Kevin Decker <kpdecker@incaseofstairs.com>",
+  "license": "MIT"
+}
