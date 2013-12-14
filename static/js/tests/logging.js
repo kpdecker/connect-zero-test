@@ -1,5 +1,13 @@
+var priorLocation;
+
 function logStep() {
-  window.top.recordLog([].concat(Array.prototype.slice.call(arguments), ['href', window.location]));
+  if (priorLocation != window.location) {
+    priorLocation = window.location + '';
+    if (arguments[0] !== 'location-change') {
+      window.top.recordLog(['location-change', priorLocation]);
+    }
+  }
+  window.top.recordLog(Array.prototype.slice.call(arguments));
 }
 
 function eventListeners() {
@@ -41,3 +49,4 @@ function eventListeners() {
 }
 
 eventListeners();
+logStep('location-change', window.location+'');
