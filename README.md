@@ -39,6 +39,7 @@ Error Cases:
   - Server unreachable
   - DNS failure
   - Timeout
+- Initiating element removed from document
 
 Page States:
 - Page loaded
