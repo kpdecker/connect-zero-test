@@ -1,12 +1,19 @@
-var testOptions = {
-  all: true
-};
+var testOptions = {};
 
 if (location.search) {
-  testOptions = {};
+  var search = location.search.replace(/^\?/, '').split(/&/g),
+      hasOthers = false;
 
-  var search = location.search.replace(/^\?/, '').split(/&/g);
   for (var i = 0; i < search.length; i++) {
-    testOptions[search[i]] = true;
+    if (/^url=(.*)/.exec(search[i])) {
+      testOptions.url = RegExp.$1;
+    } else {
+      testOptions[search[i]] = true;
+      hasOthers = true;
+    }
+  }
+
+  if (!hasOthers) {
+    testOptions.all = true;
   }
 }
