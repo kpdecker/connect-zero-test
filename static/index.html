@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <title>Browser Connection Abort Test</title>
+  <style>
+    form {
+      padding: 10px 0;
+    }
+    label {
+      display: block;
+    }
+    form > label {
+      padding: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Browser Connection Abort Test</h1>
+
+  <label>
+    Type
+    <select name="test-type">
+      <option value="xhr.html">XHR</option>
+    </select>
+  </label>
+
+  <h2>Navigation Cancellation</h2>
+  <ul id="nav-cancel">
+  </ul>
+
+  <script src="/js/components/underscore/underscore.js"></script>
+  <script src="/js/components/zepto/zepto.js"></script>
+  <script src="/js/host/logging.js"></script>
+  <script src="/js/host/test-actions.js"></script>
+  <script src="/js/nav-tests.js"></script>
+</body>
+</html>
