@@ -9,7 +9,6 @@ function createTestFrame(testName, resourceUrl, delay, callback) {
   var url = $('[name="test-type"]').val() + '?url=' + resourceUrl,
       frame = $('<iframe width="320px" height="480px" src="' + url + '"></iframe>')[0];
 
-  testLog = [];
   logPhase('Init ' + testName);
 
   document.body.appendChild(frame);
@@ -40,27 +39,4 @@ function waitForFrame(delay, callback) {
       }, delay || 500);
     }
   }, 50);
-}
-
-function backForward(callback) {
-  waitForFrame(function(frame) {
-    logPhase('back');
-    frame.contentWindow.history.back();
-
-    waitForFrame(function(frame) {
-      setTimeout(function() {
-        logPhase('forward');
-        frame.contentWindow.history.forward();
-
-        callback(frame);
-      }, 500);
-    });
-  });
-}
-function completeTest() {
-  logPhase();
-  console.log(JSON.stringify(testLog, undefined, 2));
-
-  // Do not remove until after as this will cause logging we don't care about for this test
-  $('iframe').remove();
 }

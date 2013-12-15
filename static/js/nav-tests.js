@@ -1,95 +1,102 @@
-(function() {
-  "use strict";
-
-  var navigationTests = [
-    {
-      name: 'Location Change',
-      exec: function(frame) {
-        frame.contentWindow.location = '/blank.html';
-
-        backForward(function() {
-          waitForFrame(completeTest);
-        });
-      }
+var navigationTests = {
+  'Location': [
+    function(contentWindow) {
+      logPhase('assign location');
+      contentWindow.location = '/blank.html';
     },
-    {
-      name: 'Location Replace',
-      exec: function(frame) {
-        frame.contentWindow.location.replace('/blank.html');
-
-        setTimeout(completeTest, 1000);
-      }
-    },
-    {
-      name: 'Hash Change',
-      exec: function(frame) {
-        frame.contentWindow.hash = '#foo';
-
-        backForward(function() {
-          waitForFrame(completeTest);
-        });
-      }
-    },
-    {
-      name: 'Replace Hash',
-      exec: function(frame) {
-        frame.contentWindow.location.replace(frame.contentWindow.location + '#foo');
-
-        setTimeout(completeTest, 1000);
-      }
-    },
-    {
-      name: 'Push State',
-      exec: function(frame) {
-        frame.contentWindow.history.pushState(undefined, 'foo', 'foo');
-
-        backForward(function() {
-          waitForFrame(completeTest);
-        });
-      }
-    },
-    {
-      name: 'Replate State',
-      exec: function(frame) {
-        frame.contentWindow.history.replaceState(undefined, 'foo', 'foo');
-
-        setTimeout(completeTest, 1000);
-      }
-    },
-    {
-      name: 'Form Submission',
-      exec: function(frame) {
-        var form = frame.contentDocument.createElement('form');
-        form.action = '/blank.html';
-        form.submit();
-
-        backForward(function() {
-          waitForFrame(completeTest);
-        });
-      }
-    },
-    {
-      name: 'Page Refresh',
-      exec: function(frame) {
-        frame.contentWindow.location.reload();
-
-        setTimeout(completeTest, 1000);
-      }
+    'back',
+    'forward',
+    'back',
+    function(contentWindow) {
+      logPhase('replace location');
+      contentWindow.location.replace('/blank.html');
     }
-  ];
+  ],
+  'Hash': [
+    function(contentWindow) {
+      logPhase('assign hash');
+      contentWindow.hash = '#foo';
+    },
+    'back',
+    'forward',
+    'back',
+    function(contentWindow) {
+      logPhase('replace location');
+      contentWindow.location.replace(contentWindow.location + '#foo');
+    }
+  ],
+  'Push State': [
+    function(contentWindow) {
+      logPhase('pushState');
+      contentWindow.history.pushState(undefined, 'foo', 'foo');
+    },
+    'back',
+    'forward',
+    'back',
+    function(contentWindow) {
+      logPhase('replaceState');
+      contentWindow.history.replaceState(undefined, 'foo', 'foo');
+    }
+  ],
+  'Form Submission': [
+    function(contentWindow) {
+      logPhase('submit form');
+      var form = contentWindow.document.createElement('form');
+      form.action = '/blank.html';
+      form.submit();
+    },
+    'back',
+    'forward'
+  ],
+  'Page Refresh': [
+    function(contentWindow) {
+      logPhase('reload');
+      contentWindow.location.reload();
+    }
+  ]
+};
 
-  $(document).on('click', '[data-test-id]', function() {
-    var test = navigationTests[this.getAttribute('data-test-id')];
+// Defer do the page is loaded as some of these operations behave differently
+// if run while the page is still loading.
+setTimeout(function testStep() {
+  var running = localStorage.getItem('test-running') === 'true';
+  if (running) {
+    var suite = navigationTests[localStorage.getItem('test-name')],
+        step = parseInt(localStorage.getItem('test-step'), 10);
 
-    createTestFrame(test.name, '/hang', function(frame) {
-      logPhase(test.name);
-      test.exec(frame);
-    });
+    localStorage.setItem('test-step', step + 1 + '');
 
-    return false;
-  });
+    step = suite[step];
 
-  _.each(navigationTests, function(test, index) {
-    $('#nav-cancel').append($('<li><button type="button" data-test-id="' + index + '">' + test.name));
-  });
-})();
+    if (!step) {
+      (window.opener || window).completeNavTest();
+
+      if (window.opener) {
+        window.close();
+      }
+    } else if (step === 'back') {
+      logPhase('back');
+      history.back();
+    } else if (step === 'forward') {
+      logPhase('forward');
+      history.forward();
+    } else {
+      step(window);
+    }
+
+    // Handle tests that don't replace the context
+    //
+    // This will be terminated if we are on a test that leaves the page
+    // context
+    setTimeout(function() {
+      var interval = setInterval(function() {
+        if (window.document.getElementById('continue-tests')) {
+          clearInterval(interval);
+
+          testStep();
+        }
+      }, 50);
+    }, 500);
+  }
+}, 100);
+
