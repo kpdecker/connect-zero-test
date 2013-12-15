@@ -6,7 +6,11 @@ function createTestFrame(testName, resourceUrl, delay, callback) {
 
   $('iframe').remove();
 
-  var url = $('[name="test-type"]').val() + '?url=' + resourceUrl,
+  var options = testOptions();
+  options.url = resourceUrl;
+  localStorage.setItem('test-options', JSON.stringify(options));
+
+  var url = $('[name="test-type"]').val(),
       frame = $('<iframe width="320px" height="480px" src="' + url + '"></iframe>')[0];
 
   logPhase('Init ' + testName);

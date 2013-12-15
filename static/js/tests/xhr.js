@@ -30,7 +30,8 @@
     };
   }
 
-  xhr.open('GET', testOptions.url, true);
+  logStep('xhr-request', testOptions.url);
+  xhr.open('GET', testOptions.url, !testOptions.sync);
   xhr.send(null);
 
   return xhr;

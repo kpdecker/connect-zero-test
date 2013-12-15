@@ -1,12 +1,14 @@
 function startNavTest(name) {
+  var options = testOptions();
+  options.url = '/hang';
+  localStorage.setItem('test-options', JSON.stringify(options));
+
   localStorage.setItem('test-running', 'true');
   localStorage.setItem('test-name', name);
   localStorage.setItem('test-step', '0');
-  localStorage.setItem('test-options', JSON.stringify({
-    url: '/hang',
-    all: true
-  }));
-  logPhase(name);
+  localStorage.setItem('test-log', '');
+
+  logPhase(name, JSON.stringify(options));
 
   window.open('/xhr.html');
 }
