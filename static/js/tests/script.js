@@ -15,6 +15,7 @@
     })(events[i]);
   }
 
+  logStep('script-request', testOptions.url);
   script.src = testOptions.url;
   document.body.appendChild(script);
 })();

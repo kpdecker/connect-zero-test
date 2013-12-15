@@ -15,6 +15,7 @@
     })(events[i]);
   }
 
+  logStep('img-request', testOptions.url);
   img.src = testOptions.url;
   document.body.appendChild(img);
 })();
