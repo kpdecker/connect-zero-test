@@ -10,7 +10,7 @@ function startNavTest(name) {
 
   logPhase(name, JSON.stringify(options));
 
-  window.open('/xhr.html');
+  window.open($('[name="test-type"]').val());
 }
 function completeNavTest() {
   logFlush();
