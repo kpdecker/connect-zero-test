@@ -1,14 +1,30 @@
 var priorLocation;
 
+function logPhase() {
+  var log = localStorage.getItem('test-log') || '';
+  log += '\n' + Array.prototype.slice.call(arguments).join(' ') + '\n';
+  localStorage.setItem('test-log', log);
+}
 function logStep() {
+  var log = localStorage.getItem('test-log') || '';
+
   if (priorLocation != window.location) {
     priorLocation = window.location + '';
     if (arguments[0] !== 'location-change') {
-      window.top.recordLog(['location-change', priorLocation]);
+      log += '  location-change ' + priorLocation + '\n';
     }
   }
-  window.top.recordLog(Array.prototype.slice.call(arguments));
+
+  log += '  ' + Array.prototype.slice.call(arguments).join(' ') + '\n';
+
+  localStorage.setItem('test-log', log);
 }
+
+function logFlush() {
+  console.log(localStorage.getItem('test-log'));
+  localStorage.removeItem('test-log');
+}
+
 
 function eventListeners() {
   if (testOptions.all || testOptions.beforeunload) {
@@ -30,6 +46,7 @@ function eventListeners() {
   }
 
   if (testOptions.all || testOptions.hashchange) {
+    // TODO : Is this working?
     window.addEventListener('hashchange', function() {
       logStep('hashchange');
     });
@@ -48,5 +65,7 @@ function eventListeners() {
   }
 }
 
-eventListeners();
+if (window.testOptions) {
+  eventListeners();
+}
 logStep('location-change', window.location+'');
