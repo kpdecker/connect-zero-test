@@ -15,14 +15,14 @@ var navigationTests = {
   'Hash': [
     function(contentWindow) {
       logPhase('assign hash');
-      contentWindow.hash = '#foo';
+      contentWindow.location = contentWindow.location + '#foo';
     },
     'back',
     'forward',
     'back',
     function(contentWindow) {
       logPhase('replace location');
-      contentWindow.location.replace(contentWindow.location + '#foo');
+      contentWindow.location.replace(contentWindow.location + '#bar');
     }
   ],
   'Push State': [
