@@ -26,6 +26,12 @@ function logStep() {
 
 function logFlush() {
   console.log(localStorage.getItem('test-log'));
+  $.ajax({
+    url: '/log',
+    data: {
+      log: localStorage.getItem('test-log')
+    }
+  });
   localStorage.removeItem('test-log');
 }
 
