@@ -7,10 +7,12 @@ function startNavTest(name) {
   localStorage.setItem('test-name', name);
   localStorage.setItem('test-step', '0');
 
+  var type = $('[name="test-type"]'),
+      title = type.find('option').filter(function(o){ return this.selected }).pluck('text');
   logInit();
-  logPhase(name, JSON.stringify(options));
+  logPhase(title, name, JSON.stringify(options));
 
-  window.open($('[name="test-type"]').val());
+  window.open(type.val(), 'test-win');
 }
 function completeNavTest() {
   logFlush();
