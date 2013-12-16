@@ -20,7 +20,11 @@ server.route({
   method: 'GET',
   path: '/log',
   handler: function(request, reply) {
-    console.log(new Date(), 'log', request.query.log);
+    console.log(new Date(), 'log');
+    console.log(request.headers['user-agent']);
+    console.log(request.query.log);
+    console.log();
+    console.log();
 
     reply(new Hapi.response.Empty());
   }
