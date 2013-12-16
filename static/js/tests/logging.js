@@ -1,5 +1,9 @@
 var priorLocation;
 
+function logInit() {
+  localStorage.setItem('test-log', '');
+}
+
 function logPhase() {
   var log = localStorage.getItem('test-log') || '';
   log += '\n' + Array.prototype.slice.call(arguments).join(' ') + '\n';

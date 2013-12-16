@@ -6,8 +6,8 @@ function startNavTest(name) {
   localStorage.setItem('test-running', 'true');
   localStorage.setItem('test-name', name);
   localStorage.setItem('test-step', '0');
-  localStorage.setItem('test-log', '');
 
+  logInit();
   logPhase(name, JSON.stringify(options));
 
   window.open($('[name="test-type"]').val());

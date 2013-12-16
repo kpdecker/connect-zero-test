@@ -13,6 +13,7 @@ function createTestFrame(testName, resourceUrl, delay, callback) {
   var url = $('[name="test-type"]').val(),
       frame = $('<iframe width="320px" height="480px" src="' + url + '"></iframe>')[0];
 
+  logInit();
   logPhase('Init ' + testName);
 
   document.body.appendChild(frame);
