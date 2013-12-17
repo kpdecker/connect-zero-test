@@ -19,7 +19,18 @@ var navigationTests = {
       logPhase('submit form', document.readyState);
       var form = contentWindow.document.createElement('form');
       form.action = '/blank.html';
-      form.submit();
+
+      var submit = contentWindow.document.createElement('input');
+      submit.type = 'submit';
+      form.appendChild(submit);
+      document.body.appendChild(form);
+
+      if (testOptions.manual) {
+        document.body.appendChild(document.createTextNode('Please submit the form'));
+        return false;
+      } else {
+        form.submit();
+      }
     }
   ],
   'Single Page': [
@@ -29,7 +40,6 @@ var navigationTests = {
     },
     'back',
     'forward',
-    'back',
     function(contentWindow) {
       logPhase('assign hash', document.readyState);
       contentWindow.hash = '#hash-foo';
@@ -67,7 +77,8 @@ setTimeout(function testStep() {
   var running = localStorage.getItem('test-running') === 'true';
   if (running) {
     var suite = navigationTests[localStorage.getItem('test-name')],
-        step = parseInt(localStorage.getItem('test-step'), 10);
+        step = parseInt(localStorage.getItem('test-step'), 10),
+        pause = false;
 
     localStorage.setItem('test-step', step + 1 + '');
 
@@ -81,12 +92,24 @@ setTimeout(function testStep() {
       }
     } else if (step === 'back') {
       logPhase('back');
-      history.back();
+      if (testOptions.manual) {
+        manualStep(step, true);
+      } else {
+        history.back();
+      }
     } else if (step === 'forward') {
       logPhase('forward');
-      history.forward();
+      if (testOptions.manual) {
+        manualStep(step, true);
+      } else {
+        history.forward();
+      }
     } else {
-      step(window);
+      pause = step(window) === false;
+    }
+
+    if (pause) {
+      return;
     }
 
     // Handle tests that don't replace the context
@@ -102,6 +125,21 @@ setTimeout(function testStep() {
         }
       }, 50);
     }, 500);
+
+    function manualStep(name, poll) {
+      document.body.appendChild(document.createTextNode('Please click the ' + name + ' button'));
+      pause = true;
+
+      if (poll) {
+        var location = window.location+'';
+        var interval = setInterval(function() {
+          if (location !== window.location+'') {
+            clearInterval(interval);
+            testStep();
+          }
+        }, 100);
+      }
+    }
   }
 }, 100);
 

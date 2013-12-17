@@ -13,6 +13,7 @@ function testOptions() {
 (function() {
   var availableTestOptions = {
     iframe: 'Run in iframe',
+    manual: 'Manual navigation'
   };
   var availableLogOptions = {
     error: 'window error events',
