@@ -1,4 +1,4 @@
-(function() {
+setTimeout(function() {
   var img = document.createElement('img');
 
   // Most of these do not apply per the spec, but this is exploratory so throw them all in.
@@ -16,9 +16,11 @@
   }
 
   logStep('img-request', testOptions.url);
+  img.width = 32;
+  img.height = 32;
   img.src = testOptions.url;
   document.body.appendChild(img);
-})();
+}, 100);
 
 function abortRequest() {
   var img = document.querySelector('img');

@@ -1,4 +1,4 @@
-(function() {
+setTimeout(function() {
   var script = document.createElement('script');
 
   // Most of these do not apply per the spec, but this is exploratory so throw them all in.
@@ -18,7 +18,7 @@
   logStep('script-request', testOptions.url);
   script.src = testOptions.url;
   document.body.appendChild(script);
-})();
+}, 100);
 
 function abortRequest() {
   var scripts = document.querySelectorAll('script'),
