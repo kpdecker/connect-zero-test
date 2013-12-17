@@ -1,16 +1,19 @@
 function testOptions() {
-  var selected = _.pluck($('.js-log-options').serializeArray(), 'name');
+  var selected = _.pluck($('.js-options').serializeArray(), 'name');
+  selected = _.object(selected, _.map(selected, function() { return true; }));
+
+  selected.type = $('[name="test-type"]').val();
+
   try {
     sessionStorage.setItem('selected-logs', JSON.stringify(selected));
   } catch (err) { /* NOP */ }
-
-  return _.object(selected, _.map(selected, function() { return true; }));
+  return selected;
 }
 
 (function() {
-  var availableOptions = {
-    xhr1: 'XHR1 Event',
-    xhr2: 'XHR2 Events',
+  var availableTestOptions = {
+  };
+  var availableLogOptions = {
     error: 'window error events',
     beforeunload: 'beforeunload',
     pagehide: 'pagehide',
@@ -19,15 +22,23 @@ function testOptions() {
     popstate: 'popstate'
   };
 
-  var selected = [];
+  var selected;
   try {
-    selected = JSON.parse(sessionStorage.getItem('selected-logs')) || [];
+    selected = JSON.parse(sessionStorage.getItem('selected-logs'));
   } catch (err) { /* NOP */ }
 
-  _.each(availableOptions, function(display, key) {
-    var checked = (!selected.length || _.contains(selected, key)) ? ' checked' : '';
+  function render(parent, options, defaultCheck) {
+    _.each(options, function(display, key) {
+      var checked = ((defaultCheck && !selected) || selected[key]) ? ' checked' : '';
 
-    $('.js-log-options').append(
-        $('<label><input type="checkbox" name="' + key + '"' + checked + '>' + display));
-  });
+      $(parent).append(
+          $('<label><input type="checkbox" name="' + key + '"' + checked + '>' + display));
+    });
+  }
+  render('.js-test-options', availableTestOptions);
+  render('.js-logging-options', availableLogOptions, true);
+
+  if (selected) {
+    $('[name="test-type"]').val(selected.type);
+  }
 })();
