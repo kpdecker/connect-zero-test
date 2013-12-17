@@ -4,15 +4,30 @@ var server = Hapi.createServer('localhost', 8000);
 
 server.route({
   method: 'GET',
+  path: '/partial',
+  handler: function(request, reply) {
+    console.log(new Date(), 'partial');
+    request.raw.res.writeHead(200);
+    request.raw.res.socket.end();
+    reply.close();
+  }
+});
+
+server.route({
+  method: 'GET',
+  path: '/close',
+  handler: function(request, reply) {
+    console.log(new Date(), 'close');
+    request.raw.res.socket.end();
+    reply.close();
+  }
+});
+
+server.route({
+  method: 'GET',
   path: '/hang',
   handler: function(request, reply) {
     console.log(new Date(), 'hang');
-
-    if (request.query.duration) {
-      setTimeout(function() {
-        reply(new Hapi.response.Empty());
-      }, parseInt(request.query.duration, 10));
-    }
   }
 });
 
