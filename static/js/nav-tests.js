@@ -74,7 +74,7 @@ setTimeout(function testStep() {
     step = suite[step];
 
     if (!step) {
-      (window.opener || window).completeNavTest();
+      (window.opener || window.top).completeNavTest();
 
       if (window.opener) {
         window.close();
