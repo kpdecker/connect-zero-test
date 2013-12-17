@@ -33,6 +33,7 @@ Error Cases:
   - Metarefresh
   - Location modify w/ different URL
   - Location modify w/ only hash
+  - Link activation
 - Network connection error
   - Closed connection
   - Partial response

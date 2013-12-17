@@ -17,6 +17,21 @@ var navigationTests = {
       contentWindow.location = testOptions.type;
     },
     function(contentWindow) {
+      logPhase('click link', document.readyState);
+
+      var link = contentWindow.document.createElement('a');
+      link.href = '/blank.html';
+      link.innerHTML = 'Click here';
+      document.getElementById('test-actions').appendChild(link);
+
+      if (testOptions.manual) {
+        return false;
+      } else {
+        link.click();
+      }
+    },
+    'back',
+    function(contentWindow) {
       logPhase('submit form', document.readyState);
       var form = contentWindow.document.createElement('form');
       form.action = '/blank.html';
@@ -54,6 +69,22 @@ var navigationTests = {
 
     'back',
     'forward',
+
+    function(contentWindow) {
+      logPhase('click link', document.readyState);
+
+      var link = contentWindow.document.createElement('a');
+      link.href = '#link';
+      link.innerHTML = 'Click here';
+      document.getElementById('test-actions').appendChild(link);
+
+      if (testOptions.manual) {
+        return false;
+      } else {
+        link.click();
+      }
+    },
+    'back',
 
     function(contentWindow) {
       logPhase('pushState', document.readyState);
@@ -115,7 +146,9 @@ setTimeout(function testStep() {
         window.location.reload();
       }
     } else {
-      pause = step(window) === false;
+      if (step(window) === false && testOptions.manual) {
+        manualStep('', true);
+      }
     }
 
     if (pause) {
