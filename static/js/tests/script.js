@@ -19,3 +19,9 @@
   script.src = testOptions.url;
   document.body.appendChild(script);
 })();
+
+function abortRequest() {
+  var scripts = document.querySelectorAll('script'),
+      script = scripts[scripts.length - 1];
+  script.parentNode.removeChild(script);
+}

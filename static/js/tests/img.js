@@ -19,3 +19,8 @@
   img.src = testOptions.url;
   document.body.appendChild(img);
 })();
+
+function abortRequest() {
+  var img = document.querySelector('img');
+  img.parentNode.removeChild(img);
+}

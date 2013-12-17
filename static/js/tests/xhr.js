@@ -1,5 +1,7 @@
+var xhr;
+
 (function() {
-  var xhr = new XMLHttpRequest();
+  xhr = new XMLHttpRequest();
 
   xhr.onloadstart = function() {
     logStep('loadstart', testOptions.url);
@@ -32,3 +34,7 @@
 
   return xhr;
 })();
+
+function abortRequest() {
+  xhr.abort();
+}
