@@ -22,14 +22,17 @@ function startNavTest(name) {
   }
 }
 function completeNavTest() {
-  logFlush();
-
-  localStorage.removeItem('test-running');
-  localStorage.removeItem('test-name');
-  localStorage.removeItem('test-step');
-  localStorage.removeItem('test-options');
-
+  logPhase('close');
   $('iframe').remove();
+
+  setTimeout(function() {
+    logFlush();
+
+    localStorage.removeItem('test-running');
+    localStorage.removeItem('test-name');
+    localStorage.removeItem('test-step');
+    localStorage.removeItem('test-options');
+  }, 500);
 }
 
 $('#nav-cancel').on('click', '[data-test-id]', function() {
