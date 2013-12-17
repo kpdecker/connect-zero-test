@@ -1,57 +1,62 @@
 var navigationTests = {
-  'Location': [
+  'Page Change': [
     function(contentWindow) {
-      logPhase('assign location');
+      logPhase('assign location', document.readyState);
       contentWindow.location = '/blank.html';
     },
     'back',
     'forward',
     'back',
     function(contentWindow) {
-      logPhase('replace location');
+      logPhase('replace location', document.readyState);
       contentWindow.location.replace('/blank.html');
+    },
+    function(contentWindow) {
+      logPhase('restore location', document.readyState);
+      contentWindow.location = testOptions.type;
+    },
+    function(contentWindow) {
+      logPhase('submit form', document.readyState);
+      var form = contentWindow.document.createElement('form');
+      form.action = '/blank.html';
+      form.submit();
     }
   ],
-  'Hash': [
+  'Single Page': [
     function(contentWindow) {
-      logPhase('assign hash');
+      logPhase('assign hash location', document.readyState);
       contentWindow.location = contentWindow.location + '#foo';
     },
     'back',
     'forward',
     'back',
     function(contentWindow) {
-      logPhase('replace location');
-      contentWindow.location.replace(contentWindow.location + '#bar');
-    }
-  ],
-  'Push State': [
+      logPhase('assign hash', document.readyState);
+      contentWindow.hash = '#hash-foo';
+    },
+    'back',
+    'forward',
     function(contentWindow) {
-      logPhase('pushState');
+      logPhase('replace location', document.readyState);
+      contentWindow.location.replace(contentWindow.location + '#bar');
+    },
+
+    'back',
+    'forward',
+
+    function(contentWindow) {
+      logPhase('pushState', document.readyState);
       contentWindow.history.pushState(undefined, 'foo', 'foo');
     },
     'back',
     'forward',
-    'back',
     function(contentWindow) {
-      logPhase('replaceState');
+      logPhase('replaceState', document.readyState);
       contentWindow.history.replaceState(undefined, 'foo', 'foo');
-    }
-  ],
-  'Form Submission': [
-    function(contentWindow) {
-      logPhase('submit form');
-      var form = contentWindow.document.createElement('form');
-      form.action = '/blank.html';
-      form.submit();
     },
-    'back',
-    'forward'
-  ],
-  'Page Refresh': [
     function(contentWindow) {
-      logPhase('reload');
-      contentWindow.location.reload();
+      logPhase('abort request', document.readyState);
+      contentWindow.abortRequest();
     }
   ]
 };
