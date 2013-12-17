@@ -24,10 +24,10 @@ var navigationTests = {
       var submit = contentWindow.document.createElement('input');
       submit.type = 'submit';
       form.appendChild(submit);
-      document.body.appendChild(form);
+      document.getElementById('test-actions').appendChild(form);
 
       if (testOptions.manual) {
-        document.body.appendChild(document.createTextNode('Please submit the form'));
+        document.getElementById('test-actions').appendChild(document.createTextNode('Please submit the form'));
         return false;
       } else {
         form.submit();
@@ -82,6 +82,7 @@ setTimeout(function testStep() {
         pause = false;
 
     localStorage.setItem('test-step', step + 1 + '');
+    (document.getElementById('test-actions') || {}).innerHTML = '';
 
     step = suite[step];
 
@@ -136,7 +137,9 @@ setTimeout(function testStep() {
     }, 500);
 
     function manualStep(name, poll) {
-      document.body.appendChild(document.createTextNode('Please click the ' + name + ' button'));
+      if (name) {
+        document.getElementById('test-actions').appendChild(document.createTextNode('Please click the ' + name + ' button'));
+      }
       pause = true;
 
       if (poll) {
