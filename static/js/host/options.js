@@ -10,6 +10,12 @@ function testOptions() {
   return selected;
 }
 
+var testTypes = {
+  'XHR': '/xhr.html',
+  'img': '/img.html',
+  'script': '/script.html',
+};
+
 (function() {
   var availableTestOptions = {
     iframe: 'Run in iframe',
@@ -40,6 +46,9 @@ function testOptions() {
   render('.js-test-options', availableTestOptions);
   render('.js-logging-options', availableLogOptions, true);
 
+  _.each(testTypes, function(url, name) {
+    $('[name="test-type"]').append($('<option value="' + url + '">' + name));
+  });
   if (selected) {
     $('[name="test-type"]').val(selected.type);
   }
