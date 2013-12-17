@@ -11,6 +11,7 @@ function testOptions() {
   var availableOptions = {
     xhr1: 'XHR1 Event',
     xhr2: 'XHR2 Events',
+    error: 'window error events',
     beforeunload: 'beforeunload',
     pagehide: 'pagehide',
     unload: 'unload',

@@ -72,6 +72,9 @@ function eventListeners() {
     window.addEventListener('error', function() {
       logStep('capturing error');
     }, true);
+    window.onerror = function() {
+      logStep('window.onerror');
+    };
   }
 }
 
