@@ -1,5 +1,6 @@
 var navigationTests = {
   'Page Change': [
+    'reload',
     function(contentWindow) {
       logPhase('assign location', document.readyState);
       contentWindow.location = '/blank.html';
@@ -103,6 +104,14 @@ setTimeout(function testStep() {
         manualStep(step, true);
       } else {
         history.forward();
+      }
+    } else if (step === 'reload') {
+      logPhase('reload');
+      if (testOptions.manual) {
+        manualStep(step);
+        pause = true;
+      } else {
+        window.location.reload();
       }
     } else {
       pause = step(window) === false;
