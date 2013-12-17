@@ -18,6 +18,12 @@
 <body>
   <h1>Browser Connection Abort Test</h1>
 
+  <h2>Network Errors</h2>
+  <button id="network-errors">Network Errors</button>
+
+  <h2>Navigation Cancellation</h2>
+  <ul id="nav-cancel">
+  </ul>
   <label>
     Type
     <select name="test-type"></select>
@@ -30,17 +36,12 @@
     <div class="js-logging-options"></div>
   </form>
 
-
-  <h2>Navigation Cancellation</h2>
-  <ul id="nav-cancel">
-  </ul>
-
   <script src="/js/components/underscore/underscore.js"></script>
   <script src="/js/components/zepto/zepto.js"></script>
-  <script src="/js/host/test-actions.js"></script>
   <script src="/js/host/options.js"></script>
   <script src="/js/tests/logging.js"></script>
   <script src="/js/nav-tests.js"></script>
   <script src="/js/host/nav-tests.js"></script>
+  <script src="/js/network-tests.js"></script>
 </body>
 </html>
