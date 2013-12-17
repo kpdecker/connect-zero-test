@@ -29,6 +29,9 @@ var xhr;
   };
 
   logStep('xhr-request', testOptions.url);
+  if (testOptions.timeout) {
+    xhr.timeout = testOptions.timeout;
+  }
   xhr.open('GET', testOptions.url, !testOptions.sync);
   xhr.send(null);
 
