@@ -44,6 +44,7 @@ Error Cases:
 Page States:
 - Page loaded
 - Page still loading
+- Iframe vs. standalone
 
 Monitoring:
 - XHR2 events

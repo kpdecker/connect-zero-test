@@ -7,12 +7,19 @@ function startNavTest(name) {
   localStorage.setItem('test-name', name);
   localStorage.setItem('test-step', '0');
 
-  var type = $('[name="test-type"]'),
-      title = type.find('option').filter(function(o){ return this.selected }).pluck('text');
+  var $type = $('[name="test-type"]'),
+      title = $type.find('option').filter(function(o){ return this.selected }).pluck('text');
   logInit();
   logPhase(title, name, JSON.stringify(options));
 
-  window.open(type.val(), 'test-win');
+  var url = $type.val();
+
+  if (options.iframe) {
+    var frame = $('<iframe width="320px" height="480px" src="' + url + '"></iframe>')[0];
+    document.body.appendChild(frame);
+  } else {
+    window.open(url, 'test-win');
+  }
 }
 function completeNavTest() {
   logFlush();
@@ -21,6 +28,8 @@ function completeNavTest() {
   localStorage.removeItem('test-name');
   localStorage.removeItem('test-step');
   localStorage.removeItem('test-options');
+
+  $('iframe').remove();
 }
 
 $('#nav-cancel').on('click', '[data-test-id]', function() {
