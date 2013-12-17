@@ -1,4 +1,10 @@
-var priorLocation;
+var priorLocation,
+    logEl;
+
+if (typeof testOptions === 'object') {
+  logEl = document.createElement('pre');
+  document.body.appendChild(logEl);
+}
 
 function logInit() {
   localStorage.setItem('test-log', '');
@@ -8,6 +14,10 @@ function logPhase() {
   var log = localStorage.getItem('test-log') || '';
   log += '\n' + Array.prototype.slice.call(arguments).join(' ') + '\n';
   localStorage.setItem('test-log', log);
+
+  if (logEl) {
+    logEl.innerHTML = log;
+  }
 }
 function logStep() {
   var log = localStorage.getItem('test-log') || '';
@@ -22,6 +32,9 @@ function logStep() {
   log += '  ' + Array.prototype.slice.call(arguments).join(' ') + '\n';
 
   localStorage.setItem('test-log', log);
+  if (logEl) {
+    logEl.innerHTML = log;
+  }
 }
 
 function logFlush() {
